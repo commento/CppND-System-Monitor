@@ -112,7 +112,7 @@ long LinuxParser::UpTime() {
     std::getline(stream, line);
     std::istringstream linestream(line);
     linestream >> upTime;
-    stol(upTime);
+    return stol(upTime);
   }
   return 0;
 }
@@ -242,12 +242,13 @@ string LinuxParser::User(int pid) {
 long LinuxParser::UpTime(int pid) {
   string upTime;
   string line;
-  std::ifstream stream(kProcDirectory + std::to_string(pid) + kUptimeFilename);
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    linestream >> upTime;
-    stol(upTime);
+    for (int i = 0; i < 22; i++)
+    	linestream >> upTime;
+    return stol(upTime);
   }
   return 0;
 }
